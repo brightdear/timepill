@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useMedications } from '@/contexts/medications-context';
+import { useMedications } from '../../contexts/medications-context';
 import { useTimepillColors } from '@/constants/timepill-theme';
 
 export default function RegisterScreen() {
