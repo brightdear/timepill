@@ -1,0 +1,32 @@
+---
+description: Timepill — Expo Router, React Native, TypeScript 프로젝트 규칙
+alwaysApply: true
+---
+
+# Timepill 프로젝트
+
+## 스택
+
+- Expo Router 앱, React Native, TypeScript
+
+## 코드·구조
+
+- 새 코드는 모두 TypeScript로 작성한다.
+- Expo Router 폴더 구조는 사용자가 명시적으로 바꾸라고 하지 않는 한 유지한다.
+- `node_modules`, `.expo`는 수정하지 않는다.
+- 라우트 이름 변경·폴더 이동은 꼭 필요할 때만 한다.
+- 기능이 커지면 화면 UI, 공유 상태, 유틸을 분리한다.
+
+## 탭 구조 (유지)
+
+현재 Timepill 탭: **홈**, **복약등록**, **기록**, **설정** — 구조를 임의로 바꾸지 않는다.
+
+## UI·폼
+
+- 다크 톤 카드 스타일 UI, 여백을 넉넉히 두어 가독성을 유지한다.
+- 폼에는 간단한 검증과 빈 상태(empty state) 처리를 포함한다.
+
+## 에이전트 작업 방식
+
+- 파일을 수정할 때는 어떤 파일을 왜 바꿨는지 짧게 설명한다.
+- 큰 리팩터보다 작고 안전한 수정을 선호한다.
