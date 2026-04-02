@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useTimepillColors } from './timepill-theme';
+import { useTimepillColors } from '@/constants/timepill-theme';
 
 export default function RegisterScreen() {
   const c = useTimepillColors();

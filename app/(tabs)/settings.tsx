@@ -1,7 +1,7 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useTimepillColors } from './timepill-theme';
+import { useTimepillColors } from '@/constants/timepill-theme';
 
 const MENU = [
   { id: '1', title: '알림', subtitle: '푸시·소리 (더미)' },

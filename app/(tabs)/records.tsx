@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useTimepillColors } from './timepill-theme';
+import { useTimepillColors } from '@/constants/timepill-theme';
 
 const DUMMY_RECORDS = [
   { id: '1', name: '비타민 D', time: '2026-04-02 09:00', status: '복용 완료' },

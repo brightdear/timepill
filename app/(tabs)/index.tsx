@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useTimepillColors } from './timepill-theme';
+import { useTimepillColors } from '@/constants/timepill-theme';
 
 export default function HomeScreen() {
   const c = useTimepillColors();
