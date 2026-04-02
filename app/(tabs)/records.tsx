@@ -1,36 +1,50 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useMedications } from '@/contexts/medications-context';
 import { useTimepillColors } from '@/constants/timepill-theme';
 
-const DUMMY_RECORDS = [
-  { id: '1', name: '비타민 D', time: '2026-04-02 09:00', status: '복용 완료' },
-  { id: '2', name: '혈압약', time: '2026-04-02 13:00', status: '복용 완료' },
-  { id: '3', name: '오메가3', time: '2026-04-02 21:00', status: '예정' },
-];
+function formatCreatedAt(iso: string) {
+  try {
+    const d = new Date(iso);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  } catch {
+    return iso;
+  }
+}
 
 export default function RecordsScreen() {
   const c = useTimepillColors();
+  const { medications } = useMedications();
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: c.screen }]} edges={['top']}>
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         <Text style={[styles.title, { color: c.text }]}>복약 기록</Text>
-        <Text style={[styles.desc, { color: c.muted }]}>더미 데이터입니다.</Text>
+        <Text style={[styles.desc, { color: c.muted }]}>등록한 복약 목록입니다.</Text>
 
-        {DUMMY_RECORDS.map((item) => (
-          <View
-            key={item.id}
-            style={[styles.card, { backgroundColor: c.card, borderColor: c.border }]}>
-            <View style={styles.row}>
-              <Text style={[styles.medName, { color: c.text }]}>{item.name}</Text>
-              <Text style={[styles.badge, { color: c.muted, borderColor: c.border }]}>
-                {item.status}
-              </Text>
-            </View>
-            <Text style={[styles.time, { color: c.muted }]}>{item.time}</Text>
+        {medications.length === 0 ? (
+          <View style={[styles.card, { backgroundColor: c.card, borderColor: c.border }]}>
+            <Text style={[styles.empty, { color: c.muted }]}>등록된 복약이 없습니다.</Text>
           </View>
-        ))}
+        ) : (
+          medications.map((item) => (
+            <View
+              key={item.id}
+              style={[styles.card, { backgroundColor: c.card, borderColor: c.border }]}>
+              <View style={styles.row}>
+                <Text style={[styles.medName, { color: c.text }]}>{item.name}</Text>
+              </View>
+              <Text style={[styles.meta, { color: c.muted }]}>
+                복용 시간: {item.dosageTime || '—'}
+              </Text>
+              <Text style={[styles.meta, { color: c.muted }]}>
+                복용 주기: {item.frequency || '—'}
+              </Text>
+              <Text style={[styles.time, { color: c.muted }]}>등록: {formatCreatedAt(item.createdAt)}</Text>
+            </View>
+          ))
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -71,15 +85,17 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     flex: 1,
   },
-  badge: {
-    fontSize: 12,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
-    borderWidth: 1,
-    overflow: 'hidden',
+  meta: {
+    fontSize: 14,
+    marginBottom: 4,
   },
   time: {
-    fontSize: 14,
+    fontSize: 13,
+    marginTop: 4,
+  },
+  empty: {
+    fontSize: 15,
+    textAlign: 'center',
+    paddingVertical: 8,
   },
 });

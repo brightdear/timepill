@@ -1,10 +1,36 @@
-import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useState } from 'react';
+import {
+  Alert,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useMedications } from '@/contexts/medications-context';
 import { useTimepillColors } from '@/constants/timepill-theme';
 
 export default function RegisterScreen() {
   const c = useTimepillColors();
+  const { addMedication } = useMedications();
+  const [name, setName] = useState('');
+  const [dosageTime, setDosageTime] = useState('');
+  const [frequency, setFrequency] = useState('');
+
+  function handleSave() {
+    if (!name.trim()) {
+      Alert.alert('입력 필요', '약 이름을 입력해 주세요.');
+      return;
+    }
+    addMedication({ name, dosageTime, frequency });
+    setName('');
+    setDosageTime('');
+    setFrequency('');
+    Alert.alert('저장됨', '복약 정보가 저장되었습니다.');
+  }
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: c.screen }]} edges={['top']}>
@@ -13,11 +39,13 @@ export default function RegisterScreen() {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}>
         <Text style={[styles.title, { color: c.text }]}>복약 등록</Text>
-        <Text style={[styles.desc, { color: c.muted }]}>아래 항목은 더미 입력입니다.</Text>
+        <Text style={[styles.desc, { color: c.muted }]}>약 정보를 입력한 뒤 저장하세요.</Text>
 
         <View style={[styles.card, { backgroundColor: c.card, borderColor: c.border }]}>
           <Text style={[styles.label, { color: c.muted }]}>약 이름</Text>
           <TextInput
+            value={name}
+            onChangeText={setName}
             placeholder="예: 아스피린"
             placeholderTextColor={c.muted}
             style={[styles.input, { color: c.text, borderColor: c.border }]}
@@ -27,6 +55,8 @@ export default function RegisterScreen() {
         <View style={[styles.card, { backgroundColor: c.card, borderColor: c.border }]}>
           <Text style={[styles.label, { color: c.muted }]}>복용 시간</Text>
           <TextInput
+            value={dosageTime}
+            onChangeText={setDosageTime}
             placeholder="예: 09:00, 21:00"
             placeholderTextColor={c.muted}
             style={[styles.input, { color: c.text, borderColor: c.border }]}
@@ -36,11 +66,22 @@ export default function RegisterScreen() {
         <View style={[styles.card, { backgroundColor: c.card, borderColor: c.border }]}>
           <Text style={[styles.label, { color: c.muted }]}>복용 주기</Text>
           <TextInput
+            value={frequency}
+            onChangeText={setFrequency}
             placeholder="예: 매일, 격일, 주 3회"
             placeholderTextColor={c.muted}
             style={[styles.input, { color: c.text, borderColor: c.border }]}
           />
         </View>
+
+        <Pressable
+          onPress={handleSave}
+          style={({ pressed }) => [
+            styles.saveBtn,
+            { backgroundColor: c.text, opacity: pressed ? 0.85 : 1 },
+          ]}>
+          <Text style={[styles.saveBtnText, { color: c.card }]}>저장</Text>
+        </Pressable>
       </ScrollView>
     </SafeAreaView>
   );
@@ -80,5 +121,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
     fontSize: 16,
+  },
+  saveBtn: {
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  saveBtnText: {
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

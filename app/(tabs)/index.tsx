@@ -1,10 +1,27 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useMedications } from '@/contexts/medications-context';
 import { useTimepillColors } from '@/constants/timepill-theme';
 
 export default function HomeScreen() {
   const c = useTimepillColors();
+  const { medications } = useMedications();
+
+  const todayLine =
+    medications.length > 0
+      ? medications.map((m) => m.name).join(', ')
+      : '등록된 약이 없습니다';
+
+  const nextTimeLine =
+    medications.length > 0
+      ? medications[0].dosageTime || '시간 미입력'
+      : '없음';
+
+  const statusLine =
+    medications.length > 0
+      ? `${medications.length}개 등록됨`
+      : '0개 등록됨';
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: c.screen }]} edges={['top']}>
@@ -16,17 +33,17 @@ export default function HomeScreen() {
 
         <View style={[styles.card, { backgroundColor: c.card, borderColor: c.border }]}>
           <Text style={[styles.cardLabel, { color: c.muted }]}>오늘의 복약</Text>
-          <Text style={[styles.cardValue, { color: c.text }]}>비타민 D, 오메가3</Text>
+          <Text style={[styles.cardValue, { color: c.text }]}>{todayLine}</Text>
         </View>
 
         <View style={[styles.card, { backgroundColor: c.card, borderColor: c.border }]}>
           <Text style={[styles.cardLabel, { color: c.muted }]}>다음 복약 시간</Text>
-          <Text style={[styles.cardValue, { color: c.text }]}>오후 6:30</Text>
+          <Text style={[styles.cardValue, { color: c.text }]}>{nextTimeLine}</Text>
         </View>
 
         <View style={[styles.card, { backgroundColor: c.card, borderColor: c.border }]}>
           <Text style={[styles.cardLabel, { color: c.muted }]}>복약 현황</Text>
-          <Text style={[styles.cardValue, { color: c.text }]}>완료 2 / 예정 1</Text>
+          <Text style={[styles.cardValue, { color: c.text }]}>{statusLine}</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
